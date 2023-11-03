@@ -233,6 +233,13 @@ endif ()
 with_get ( icu "ICU" "International Components for Unicode" )
 
 # Support for OpenSSL
+set(OPENSSL_ROOT_DIR "/ush/share/ssr/boringssl/build")
+set(OPENSSL_CRYPTO_LIBRARY "/ush/share/ssr/boringssl/build/crypto/libcrypto.so")
+set(OPENSSL_SSL_LIBRARY "/ush/share/ssr/boringssl/build/ssl/libssl.so")
+set(OPENSSL_INCLUDE_DIR "/ush/share/ssr/boringssl/include")
+set(OPENSSL_USE_STATIC_LIBS TRUE)
+list(APPEND CMAKE_FIND_ROOT_PATH "${OPENSSL_ROOT_DIR}")
+
 with_menu_comp ( OpenSSL SSL "OpenSSL" "for encrypted networking" )
 win_install_c ( OpenSSL SSL daemon )
 
