@@ -24,7 +24,7 @@
 #define BIO_CTRL_DGRAM_SET_RECV_TIMEOUT 33 /* setsockopt, essentially */
 #define BIO_CTRL_DGRAM_GET_RECV_TIMEOUT 34 /* getsockopt, essentially */
 #define BIO_CTRL_DGRAM_SET_SEND_TIMEOUT 35 /* setsockopt, essentially */
-#define BIO_CTRL_DGRAM_GET_SEND_TIMEOUT 36 /* getsockopt, essentially */MakeSecureLayer
+#define BIO_CTRL_DGRAM_GET_SEND_TIMEOUT 36 /* getsockopt, essentially */
 
 static CSphString g_sSslCert;
 static CSphString g_sSslKey;
@@ -564,16 +564,16 @@ bool MakeSecureLayer ( std::unique_ptr<AsyncNetBuffer_c>& pSource )
   /* pSource = std::make_unique<AsyncSSBufferedSocket_c> ( std::move ( pFrontEnd ) ); */
   /* return true; */
 
-  const BIO_METHOD* bio_method = BIO_f_ssl();
-  BIOPtr_c pFrontEnd ( BIO_new ( bio_method ), [] ( BIO* pBio ) {
-    BIO_free_all(pBio);
-  } );
-  /* SSL *pSSL = reinterpret_cast<SSL*>(pFrontEnd->ptr); */
-  /* SSL_set_mode (pSSL, SSL_MODE_AUTO_RETRY); */
-  BIO_push ( pFrontEnd, BIO_new_coroAsync ( std::move ( pSource ) ) );
-  pSource = std::make_unique<AsyncSSBufferedSocket_c> ( std::move ( pFrontEnd ) );
+	const BIO_METHOD* bio_method = BIO_f_ssl();
+	BIOPtr_c pFrontEnd ( BIO_new ( bio_method ), [] ( BIO* pBio ) {
+		BIO_free_all(pBio);
+	} );
+	/* SSL *pSSL = reinterpret_cast<SSL*>(pFrontEnd->ptr); */
+	/* SSL_set_mode (pSSL, SSL_MODE_AUTO_RETRY); */
+	BIO_push ( pFrontEnd, BIO_new_coroAsync ( std::move ( pSource ) ) );
+	pSource = std::make_unique<AsyncSSBufferedSocket_c> ( std::move ( pFrontEnd ) );
 
-  return true;
+  	return true;
 }
 #else
 
